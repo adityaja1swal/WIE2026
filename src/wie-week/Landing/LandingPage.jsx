@@ -1,21 +1,22 @@
-import { useMemo, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import './LandingPage.css';
 
-import heroBg     from '../../assets/images/hero-bg.png';
-import wieBadge   from '../../assets/images/wie-badge.png';
-import wieLogo    from '../../assets/images/wie-logo.png';
-import dotsImg    from '../../assets/images/dots.png';
-import mpBg       from '../../assets/images/MP-bg.png';
+import heroBg from '../../assets/images/hero-bg.png';
+import wieBadge from '../../assets/images/wie-badge.png';
+import wieLogo from '../../assets/images/wie-logo.png';
+import dotsImg from '../../assets/images/dots.png';
+import mpBg from '../../assets/images/MP-bg.png';
 import taskCrewBg from '../../assets/images/task-crew-bg.png';
-import redCrew    from '../../assets/images/red.png';
-import blueCrew   from '../../assets/images/blue.png';
-import greenCrew  from '../../assets/images/green.png';
-import pinkCrew   from '../../assets/images/pink.png';
+import redCrew from '../../assets/images/red.png';
+import blueCrew from '../../assets/images/blue.png';
+import greenCrew from '../../assets/images/green.png';
+import pinkCrew from '../../assets/images/pink.png';
 import orangeCrew from '../../assets/images/orange.png';
 
 /* ── Hero star layer (absolute, sits above overlay, below content) ── */
 function HeroStars() {
-  const stars = useMemo(() => {
+  const [stars, setStars] = useState([]);
+  useEffect(() => {
     const items = [];
     for (let i = 0; i < 90; i++) {
       const size = Math.random() * 3 + 0.8;
@@ -23,9 +24,9 @@ function HeroStars() {
         type: 'star', id: i,
         style: {
           left: `${Math.random() * 100}%`,
-          top:  `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
           width: `${size}px`, height: `${size}px`,
-          '--dur':   `${(Math.random() * 3 + 1.5).toFixed(1)}s`,
+          '--dur': `${(Math.random() * 3 + 1.5).toFixed(1)}s`,
           '--delay': `${(Math.random() * 4).toFixed(1)}s`,
           opacity: Math.random() * 0.5 + 0.5,
         },
@@ -36,14 +37,14 @@ function HeroStars() {
         type: 'shoot', id: `hs${i}`,
         style: {
           left: `${Math.random() * 65}%`,
-          top:  `${Math.random() * 50}%`,
-          '--shoot-dur':   `${(Math.random() * 2 + 1.8).toFixed(1)}s`,
+          top: `${Math.random() * 50}%`,
+          '--shoot-dur': `${(Math.random() * 2 + 1.8).toFixed(1)}s`,
           '--shoot-delay': `${(i * 3.5 + Math.random() * 2).toFixed(1)}s`,
           transform: `rotate(${14 + Math.random() * 10}deg)`,
         },
       });
     }
-    return items;
+    requestAnimationFrame(() => setStars(items));
   }, []);
   return (
     <div className="hero-stars" aria-hidden="true">
@@ -58,7 +59,8 @@ function HeroStars() {
 
 /* ── Global star field (fixed, visible on every section while scrolling) ── */
 function GlobalStars() {
-  const stars = useMemo(() => {
+  const [stars, setStars] = useState([]);
+  useEffect(() => {
     const items = [];
     for (let i = 0; i < 180; i++) {
       const size = Math.random() * 3 + 0.7;
@@ -66,9 +68,9 @@ function GlobalStars() {
         type: 'star', id: `g${i}`,
         style: {
           left: `${Math.random() * 100}%`,
-          top:  `${Math.random() * 600}vh`,
+          top: `${Math.random() * 600}vh`,
           width: `${size}px`, height: `${size}px`,
-          '--dur':   `${(Math.random() * 3 + 1.5).toFixed(1)}s`,
+          '--dur': `${(Math.random() * 3 + 1.5).toFixed(1)}s`,
           '--delay': `${(Math.random() * 5).toFixed(1)}s`,
           opacity: Math.random() * 0.45 + 0.4,
         },
@@ -79,14 +81,14 @@ function GlobalStars() {
         type: 'shoot', id: `gs${i}`,
         style: {
           left: `${Math.random() * 70}%`,
-          top:  `${Math.random() * 400}vh`,
-          '--shoot-dur':   `${(Math.random() * 2 + 2).toFixed(1)}s`,
+          top: `${Math.random() * 400}vh`,
+          '--shoot-dur': `${(Math.random() * 2 + 2).toFixed(1)}s`,
           '--shoot-delay': `${(i * 4 + Math.random() * 3).toFixed(1)}s`,
           transform: `rotate(${12 + Math.random() * 12}deg)`,
         },
       });
     }
-    return items;
+    requestAnimationFrame(() => setStars(items));
   }, []);
   return (
     <div className="global-stars" aria-hidden="true">
@@ -101,11 +103,11 @@ function GlobalStars() {
 
 /* ── Task data ── */
 const TASKS = [
-  { id: 1, label: 'TASK 1', name: 'MCQ , Aptitude\nLogic and Tech', img: redCrew,    side: 'left',  delay: '0s'   },
-  { id: 2, label: 'TASK 2', name: 'Anomaly Detection',              img: blueCrew,   side: 'right', delay: '0.5s' },
-  { id: 3, label: 'TASK 3', name: '',                               img: greenCrew,  side: 'left',  delay: '1s'   },
-  { id: 4, label: 'TASK 4', name: 'QR + AUDIO',                    img: pinkCrew,   side: 'right', delay: '1.5s' },
-  { id: 5, label: 'TASK 5', name: '',                               img: orangeCrew, side: 'left',  delay: '2s'   },
+  { id: 1, label: 'TASK 1', name: 'MCQ , Aptitude\nLogic and Tech', img: redCrew, side: 'left', delay: '0s' },
+  { id: 2, label: 'TASK 2', name: 'Anomaly Detection', img: blueCrew, side: 'right', delay: '0.5s' },
+  { id: 3, label: 'TASK 3', name: '', img: greenCrew, side: 'left', delay: '1s' },
+  { id: 4, label: 'TASK 4', name: 'QR + AUDIO', img: pinkCrew, side: 'right', delay: '1.5s' },
+  { id: 5, label: 'TASK 5', name: '', img: orangeCrew, side: 'left', delay: '2s' },
 ];
 
 const INSTRUCTIONS = [
@@ -116,30 +118,7 @@ const INSTRUCTIONS = [
   { num: '05', text: 'Win by completing all tasks OR by identifying and ejecting every impostor from the ship.' },
 ];
 
-/* ── Smooth scroll helpers ── */
-const scrollTo = (id) =>
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-/* ── Staggered reveal hook for instruction items ── */
-function useRevealOnScroll(listRef) {
-  useEffect(() => {
-    const items = listRef.current?.querySelectorAll('.instr-item');
-    if (!items) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('instr-visible');
-            obs.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-    items.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, [listRef]);
-}
+/* helpers removed: scrollTo and useRevealOnScroll were unused and caused linter warnings */
 
 /* ── Main Component ── */
 export default function LandingPage() {
@@ -155,7 +134,7 @@ export default function LandingPage() {
         <div className="hero-content">
           <nav className="navbar" aria-label="Site header">
             <img src={wieBadge} alt="WIE IEEE Badge" className="nav-badge" />
-            <img src={wieLogo}  alt="Women in Engineering" className="nav-logo" />
+            <img src={wieLogo} alt="Women in Engineering" className="nav-logo" />
           </nav>
           <h1 className="hero-title">Crewmate Protocol</h1>
           <div className="hero-spacer" />
@@ -203,18 +182,18 @@ export default function LandingPage() {
               preserveAspectRatio="none" aria-hidden="true">
               <defs>
                 <filter id="glow">
-                  <feGaussianBlur stdDeviation="2.5" result="blur"/>
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  <feGaussianBlur stdDeviation="2.5" result="blur" />
+                  <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                 </filter>
               </defs>
               {/* 1(left)→2(right) */}
-              <line x1="360" y1="70"  x2="440" y2="230" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeDasharray="10,5" filter="url(#glow)"/>
+              <line x1="360" y1="70" x2="440" y2="230" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeDasharray="10,5" filter="url(#glow)" />
               {/* 2(right)→3(left) */}
-              <line x1="440" y1="230" x2="360" y2="390" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeDasharray="10,5" filter="url(#glow)"/>
+              <line x1="440" y1="230" x2="360" y2="390" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeDasharray="10,5" filter="url(#glow)" />
               {/* 3(left)→4(right) */}
-              <line x1="360" y1="390" x2="440" y2="550" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeDasharray="10,5" filter="url(#glow)"/>
+              <line x1="360" y1="390" x2="440" y2="550" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeDasharray="10,5" filter="url(#glow)" />
               {/* 4(right)→5(left) */}
-              <line x1="440" y1="550" x2="360" y2="710" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeDasharray="10,5" filter="url(#glow)"/>
+              <line x1="440" y1="550" x2="360" y2="710" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeDasharray="10,5" filter="url(#glow)" />
             </svg>
 
             {TASKS.map(task => (
