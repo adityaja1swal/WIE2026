@@ -13,13 +13,13 @@ import crewYellow from "../round1/assets/crewmate_yellow.png";
 // ─── Phase type ───────────────────────────────────────────────────────────────
 // "landing" | "zoom" | "press" | "meeting" | "briefing" | "anomaly" | "debug" | "results"
 
-export default function HackAmongUs({ onComplete }) {
+export default function HackAmongUs({ onComplete, roundNum = 1 }) {
     const [phase, setPhase] = useState("landing");
     return (
         <div className="hack-root">
             <Starfield />
             <FloatingCrewmates />
-            {phase === "landing" && <Landing onStart={() => setPhase("zoom")} />}
+            {phase === "landing" && <Landing onStart={() => setPhase("zoom")} roundNum={roundNum} />}
             {(phase === "zoom" || phase === "press") && (
                 <ButtonSequence phase={phase} onAdvance={(p) => setPhase(p)} />
             )}
@@ -105,13 +105,39 @@ function FloatingCrewmates() {
 /* ── Landing ────────────────────────────────────────────────────────────────── */
 const EMERGENCY = { x: 48.8, y: 48.4, w: 5, h: 4 };
 
-function Landing({ onStart }) {
+function Landing({ onStart, roundNum }) {
     return (
         <section className="hack-landing">
             <div className="hack-cafeteria-wrap">
                 <div className="hack-cafeteria-stage hack-camera-drift">
                     <img src={cafeteriaImg} alt="Cafeteria" className="hack-cafeteria-img" draggable={false} />
                     <EmergencyHotspot onClick={onStart} />
+                    {/* Task pips — horizontal row below the lower two tables */}
+                    <div style={{
+                        position: 'absolute',
+                        left: '50%',
+                        top: '75%',
+                        transform: 'translateX(-50%)',
+                        display: 'flex',
+                        gap: 'clamp(6px, 1.2vw, 14px)',
+                        zIndex: 6,
+                        pointerEvents: 'none',
+                    }}>
+                        {[1, 2, 3, 4, 5].map(n => (
+                            <div
+                                key={n}
+                                className={`hack-task-pip ${
+                                    n < roundNum ? 'hack-task-pip--done'
+                                    : n === roundNum ? 'hack-task-pip--active'
+                                    : ''
+                                }`}
+                                style={{ position: 'relative', left: 'unset', top: 'unset', transform: 'none' }}
+                            >
+                                <span className="hack-task-pip-num">{n}</span>
+                                <span className="hack-task-pip-label">TASK {n}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -123,7 +149,7 @@ function Landing({ onStart }) {
 
             <div className="hack-press-prompt">
                 <span className="hack-press-arrow">↓</span>
-                PRESS THE EMERGENCY BUTTON TO BEGIN
+                PRESS THE EMERGENCY BUTTON TO BEGIN ROUND {String(roundNum).padStart(2, '0')}
                 <span className="hack-press-arrow">↓</span>
             </div>
         </section>

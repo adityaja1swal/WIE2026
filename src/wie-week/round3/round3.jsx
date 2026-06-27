@@ -367,23 +367,35 @@ export default function Round3({ onComplete }) {
         </div>
       </div>
 
-      {onComplete && (
-        <div style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 9999 }}>
-          <button
-            onClick={onComplete}
-            style={{
-              fontFamily: "'Press Start 2P',monospace", fontSize: '0.55rem',
-              padding: '0.85rem 1.5rem', borderRadius: '0.75rem',
-              border: '2px solid #38fedc', cursor: 'pointer',
-              background: 'rgba(4,5,15,0.92)', color: '#38fedc',
-              boxShadow: '0 0 20px rgba(56,254,220,0.4)',
-              backdropFilter: 'blur(8px)', whiteSpace: 'nowrap',
-            }}
-          >
-            NEXT ROUND →
-          </button>
-        </div>
-      )}
+      {status === 'ok' && onComplete && <NavigatingOverlay onDone={onComplete} label="OVERRIDE ACCEPTED" />}
     </>
+  );
+}
+
+function NavigatingOverlay({ onDone, label = 'TASK COMPLETE' }) {
+  const [count, setCount] = useState(3);
+  useEffect(() => {
+    const t = setInterval(() => setCount(c => c - 1), 1000);
+    return () => clearInterval(t);
+  }, []);
+  useEffect(() => { if (count <= 0) onDone(); }, [count, onDone]);
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 99999,
+      background: 'rgba(4,5,15,0.93)',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      gap: '1.5rem',
+    }}>
+      <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 'clamp(0.6rem,2vw,1rem)', color: '#39ff14', letterSpacing: '0.2em', textShadow: '0 0 20px rgba(57,255,20,0.7)' }}>
+        ✓ {label}
+      </div>
+      <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 'clamp(0.45rem,1.2vw,0.7rem)', color: '#38fedc', letterSpacing: '0.15em', opacity: 0.85 }}>
+        NAVIGATING TO NEXT TASK...
+      </div>
+      <div style={{ fontFamily: "'Press Start 2P',monospace", fontSize: 'clamp(1.5rem,6vw,3.5rem)', color: '#38fedc', textShadow: '0 0 30px rgba(56,254,220,0.8)' }}>
+        {count > 0 ? count : ''}
+      </div>
+    </div>
   );
 }

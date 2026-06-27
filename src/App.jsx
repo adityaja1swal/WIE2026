@@ -24,50 +24,72 @@ import Finish  from './wie-week/Transition_pages/finish';
 import './index.css';
 
 /*
-  Full game flow:
-  landing → hack_transition → round1t → round1
-          → round2t → round2
-          → round3t → round3
-          → round4t → round4
-          → round5t → round5
-          → finish
+  Full cinematic game flow:
+  landing
+    → hack_transition [roundNum=1]  (cafeteria — "PRESS TO BEGIN ROUND 01")
+    → round1t  (guidelines)
+    → round1   (gameplay)
+    → hack_transition [roundNum=2]
+    → round2t
+    → round2
+    → hack_transition [roundNum=3]
+    → round3t
+    → round3
+    → hack_transition [roundNum=4]
+    → round4t
+    → round4
+    → hack_transition [roundNum=5]
+    → round5t
+    → round5
+    → finish
 */
 
 const STAGES = [
   'landing',
-  'hack_transition',
-  'round1t', 'round1',
-  'round2t', 'round2',
-  'round3t', 'round3',
-  'round4t', 'round4',
-  'round5t', 'round5',
+  'hack1', 'round1t', 'round1',
+  'hack2', 'round2t', 'round2',
+  'hack3', 'round3t', 'round3',
+  'hack4', 'round4t', 'round4',
+  'hack5', 'round5t', 'round5',
   'finish',
 ];
 
-function next(stage) {
-  const i = STAGES.indexOf(stage);
+function nextStage(s) {
+  const i = STAGES.indexOf(s);
   return i >= 0 && i < STAGES.length - 1 ? STAGES[i + 1] : 'finish';
 }
 
 export default function App() {
   const [stage, setStage] = useState('landing');
-  const advance = () => setStage(s => next(s));
+  const advance = () => setStage(s => nextStage(s));
 
   return (
     <BrowserRouter>
-      {stage === 'landing'         && <LandingPage  onStart={advance} />}
-      {stage === 'hack_transition' && <HackAmongUs  onComplete={advance} />}
-      {stage === 'round1t'         && <Round1T      onStart={advance} />}
-      {stage === 'round1'          && <Round1       onComplete={advance} />}
-      {stage === 'round2t'         && <Round2T      onStart={advance} />}
-      {stage === 'round2'          && <Round2       onComplete={advance} />}
-      {stage === 'round3t'         && <Round3T      onStart={advance} />}
-      {stage === 'round3'          && <Round3       onComplete={advance} />}
-      {stage === 'round4t'         && <Round4T      onStart={advance} />}
-      {stage === 'round4'          && <Round4       onComplete={advance} />}
-      {stage === 'round5t'         && <Round5T      onStart={advance} />}
-      {stage === 'round5'          && <Round5       onComplete={advance} />}
-      {stage === 'finish'          && <Finish       onRestart={() => setStage('landing')} />}
+      {stage === 'landing' && <LandingPage onStart={advance} />}
+
+      {/* ── Cinematic transition before each round ── */}
+      {stage === 'hack1' && <HackAmongUs roundNum={1} onComplete={advance} />}
+      {stage === 'hack2' && <HackAmongUs roundNum={2} onComplete={advance} />}
+      {stage === 'hack3' && <HackAmongUs roundNum={3} onComplete={advance} />}
+      {stage === 'hack4' && <HackAmongUs roundNum={4} onComplete={advance} />}
+      {stage === 'hack5' && <HackAmongUs roundNum={5} onComplete={advance} />}
+
+      {/* ── Guidelines pages ── */}
+      {stage === 'round1t' && <Round1T onStart={advance} />}
+      {stage === 'round2t' && <Round2T onStart={advance} />}
+      {stage === 'round3t' && <Round3T onStart={advance} />}
+      {stage === 'round4t' && <Round4T onStart={advance} />}
+      {stage === 'round5t' && <Round5T onStart={advance} />}
+
+      {/* ── Gameplay rounds ── */}
+      {stage === 'round1' && <Round1 onComplete={advance} />}
+      {stage === 'round2' && <Round2 onComplete={advance} />}
+      {stage === 'round3' && <Round3 onComplete={advance} />}
+      {stage === 'round4' && <Round4 onComplete={advance} />}
+      {stage === 'round5' && <Round5 onComplete={advance} />}
+
+      {/* ── Finish ── */}
+      {stage === 'finish' && <Finish onRestart={() => setStage('landing')} />}
     </BrowserRouter>
   );
 }

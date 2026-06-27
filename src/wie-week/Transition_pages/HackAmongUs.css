@@ -1134,3 +1134,78 @@
   gap: 1rem;
   justify-content: center;
 }
+
+/* ── Task progress pips on cafeteria tables ────────────────────────────────── */
+/* Each pip is individually positioned via inline style in the JSX */
+
+.hack-task-pip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: rgba(4, 8, 20, 0.82);
+  border: 1px solid rgba(90, 120, 160, 0.35);
+  border-radius: 8px;
+  padding: 5px 8px;
+  min-width: clamp(36px, 5vw, 54px);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  opacity: 0.55;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.hack-task-pip-num {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.45rem, 0.9vw, 0.65rem);
+  color: rgba(160, 190, 220, 0.5);
+  line-height: 1;
+}
+
+.hack-task-pip-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.3rem, 0.5vw, 0.42rem);
+  color: rgba(120, 160, 200, 0.4);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Active (current round) */
+.hack-task-pip--active {
+  opacity: 1;
+  border-color: #38fedc;
+  box-shadow: 0 0 14px rgba(56, 254, 220, 0.55), inset 0 0 8px rgba(56, 254, 220, 0.1);
+  animation: hack-pip-pulse 2s ease-in-out infinite;
+}
+.hack-task-pip--active .hack-task-pip-num {
+  color: #38fedc;
+  text-shadow: 0 0 8px rgba(56, 254, 220, 0.8);
+}
+.hack-task-pip--active .hack-task-pip-label {
+  color: rgba(56, 254, 220, 0.8);
+}
+
+/* Done (completed rounds) */
+.hack-task-pip--done {
+  opacity: 0.85;
+  border-color: rgba(57, 255, 20, 0.5);
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.25);
+}
+.hack-task-pip--done .hack-task-pip-num {
+  color: #39ff14;
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.6);
+}
+.hack-task-pip--done::after {
+  content: '✓';
+  font-size: clamp(0.4rem, 0.7vw, 0.55rem);
+  color: #39ff14;
+  font-weight: bold;
+}
+.hack-task-pip--done .hack-task-pip-label {
+  color: rgba(57, 255, 20, 0.6);
+}
+
+@keyframes hack-pip-pulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(56, 254, 220, 0.55), inset 0 0 8px rgba(56, 254, 220, 0.1); }
+  50%       { box-shadow: 0 0 26px rgba(56, 254, 220, 0.9), inset 0 0 14px rgba(56, 254, 220, 0.2); }
+}

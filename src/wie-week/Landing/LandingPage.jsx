@@ -137,7 +137,7 @@ export default function LandingPage({ onStart }) {
             <img src={wieBadge} alt="WIE IEEE Badge" className="nav-badge" />
             <img src={wieLogo} alt="Women in Engineering" className="nav-logo" />
           </nav>
-          <h1 className="hero-title">Crewmate Protocol</h1>
+          <h1 className="hero-title">CYPHER TRAIL</h1>
           <div className="hero-spacer" />
           <div className="hero-bottom">
             <div className="hero-btns">
