@@ -1,25 +1,26 @@
 import { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';  // needed by LandingPage internals
+import { MOCK_MODE } from './wie-week/api';
 
-import LandingPage  from './wie-week/Landing/LandingPage';
-import HackAmongUs  from './wie-week/Transition_pages/HackAmongUs';
+import LandingPage from './wie-week/Landing/LandingPage';
+import HackAmongUs from './wie-week/Transition_pages/HackAmongUs';
 
 import Round1T from './wie-week/Transition_pages/round1t';
-import Round1  from './wie-week/round1/round1';
+import Round1 from './wie-week/round1/round1';
 
 import Round2T from './wie-week/Transition_pages/round2t';
-import Round2  from './wie-week/round2/round2';
+import Round2 from './wie-week/round2/round2';
 
 import Round3T from './wie-week/Transition_pages/round3t';
-import Round3  from './wie-week/round3/round3';
+import Round3 from './wie-week/round3/round3';
 
 import Round4T from './wie-week/Transition_pages/round4t';
-import Round4  from './wie-week/round4/round4';
+import Round4 from './wie-week/round4/round4';
 
 import Round5T from './wie-week/Transition_pages/round5t';
-import Round5  from './wie-week/round5/round5';
+import Round5 from './wie-week/round5/round5';
 
-import Finish  from './wie-week/Transition_pages/finish';
+import Finish from './wie-week/Transition_pages/finish';
 
 import './index.css';
 
@@ -90,6 +91,21 @@ export default function App() {
 
       {/* ── Finish ── */}
       {stage === 'finish' && <Finish onRestart={() => setStage('landing')} />}
+      {/* ── DEV: skip button (mock mode only) ── */}
+      {MOCK_MODE && (
+        <button
+          onClick={advance}
+          style={{
+            position: 'fixed', bottom: 16, right: 16, zIndex: 99999,
+            fontFamily: 'monospace', fontSize: '0.65rem',
+            background: 'rgba(255,200,0,0.15)', color: '#ffc800',
+            border: '1px solid rgba(255,200,0,0.5)', borderRadius: 6,
+            padding: '6px 14px', cursor: 'pointer', letterSpacing: '0.1em',
+          }}
+        >
+          DEV SKIP › {stage}
+        </button>
+      )}
     </BrowserRouter>
   );
 }

@@ -10,7 +10,7 @@
  */
 
 // ─── Config ────────────────────────────────────────────────────────────────
-const MOCK_MODE = true;
+export const MOCK_MODE = true;
 const BASE_URL  = 'https://your-backend.example.com/api'; // swap when ready
 
 // ─── Round 1 — MCQ Questions ───────────────────────────────────────────────
